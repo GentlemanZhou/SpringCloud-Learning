@@ -9,6 +9,7 @@
     <version>1.0.0</version>
     <modules>
         <module>mz-eureka-server</module>
+        <module>mz-eureka-client-one</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -40,6 +41,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <repositories><!-- Maven库 -->
         <repository>
             <id>maven-ali</id>
@@ -54,27 +63,6 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 
     <build>
         <pluginManagement>
