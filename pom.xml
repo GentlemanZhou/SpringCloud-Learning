@@ -10,6 +10,7 @@
     <modules>
         <module>mz-eureka-server</module>
         <module>mz-eureka-client-one</module>
+        <module>mz-eureka-consumer-ribbon</module>
     </modules>
     <packaging>pom</packaging>
 
