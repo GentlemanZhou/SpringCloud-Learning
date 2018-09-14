@@ -1,0 +1,15 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:1001/eureka/
+server:
+    port: 1003
+spring:
+    application:
+        name: mz-config-server-git
+    cloud:
+        config:
+            server:
+                git:
+                    searchPaths: '{application}'
+                    uri: https://gitee.com/mrzhouy/config-repo-demo

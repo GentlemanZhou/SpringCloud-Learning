@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @Value("${server.port}")
     private String serverPort;
+    @Value("${info.message}")
+    private String infoMessage;
     @RequestMapping("hi")
     public String sayHi() {
-        return "Hi Spring Cloud" + serverPort;
+        return "Hi Spring Cloud, running in port :" + serverPort + "     info.message is : " + infoMessage;
     }
 }

@@ -1,0 +1,22 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:1001/eureka/
+server:
+    port: 1003
+spring:
+    application:
+        name: mz-config-server-mysql
+    profiles:
+        active: jdbc
+    cloud:
+        config:
+            label: master
+            server:
+                jdbc:
+                    sql: SELECT `KEY`, `VALUE` from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/db_microserver_config
+        username: root
+        password: TW123
