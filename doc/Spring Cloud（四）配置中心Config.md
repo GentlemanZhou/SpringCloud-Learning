@@ -31,13 +31,36 @@
 POM 文件如下：
 
 ```xml
-
+ <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-server</artifactId>
+        </dependency>
+    </dependencies>
 ```
 
 创建项目配置文件 `bootstarp.yml` , 配置如下：
 
 ```properties
-
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:1001/eureka/
+server:
+    port: 1003
+spring:
+    application:
+        name: mz-config-server-git
+    cloud:
+        config:
+            server:
+                git:
+                    searchPaths: '{application}'
+                    uri: https://gitee.com/mrzhouy/config-repo-demo
 ```
 
 spring clour config git 属性解释：
@@ -198,4 +221,92 @@ spring:
 
 创建数据库的sql 文件在项目中：ConfigMySql.sql
 
-至此，修改完成，按顺序启动 注册中心、配置中心 、客户端(记得修改配置中心的serverId哦)。  调用 http://localhost:2001/hi ，我们可以看到通过配置中心拿到的  info.message 这个值。完结撒花.......
+至此，修改完成，按顺序启动 注册中心、配置中心 、客户端(记得修改配置中心的serverId哦)。  调用 http://localhost:2001/hi ，我们可以看到通过配置中心拿到的  info.message 这个值。
+
+
+
+## Refresh
+
+上面我们成功的完成了配置中心，但是这个时候就产生了疑问，client是在项目启动的时候就请求了配置中心，获取到了配置，如图：
+
+![](C:\Users\mrzho\AppData\Local\Temp\1536974203996.png)
+
+那再我们修改完配置中心的配置后，如何刷新配置呢。如果需要重启项目的话，配置中心就会显得比较鸡肋。
+
+别急，spring cloud 当然为我们提供了刷新的办法。仅修改客户端即 mz-eureka-client-one 项目，就可以实现 refresh 的功能。
+
+### 添加依赖
+
+```
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+增加了`spring-boot-starter-actuator`包，`spring-boot-starter-actuator`是一套监控的功能，可以监控程序在运行时状态，其中就包括`/actuator/refresh`的功能。
+
+### 开启更新机制
+
+需要给加载变量的类上面加载`@RefreshScope`，在客户端执行`/actuator/refresh`的时候就会更新此类下面的变量值。
+
+```java
+@RestController
+@RefreshScope
+public class HelloController {
+    @Value("${server.port}")
+    private String serverPort;
+    @Value("${info.message}")
+    private String infoMessage;
+    @RequestMapping("hi")
+    public String sayHi() {
+        return "Hi Spring Cloud, running in port :" + serverPort + "     info.message is : " + infoMessage;
+    }
+}
+```
+
+### 配置
+
+Spring Boot 1.5.X 以上默认开通了安全认证，所以要在配置文件 application.yml 中添加以下配置以将`/actuator/refresh`这个 Endpoint 暴露出来
+
+```properties
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+```
+
+### 测试
+
+改造完之后，我们重启 mz-eureka-consumer-one，我们以 POST 请求的方式来访问 <http://localhost:2001/actuator/refresh> 就会更新配置文件至最新版本。
+
+测试流程：
+
+1. 访问 <http://localhost:2001/hi> 返回`Hi Spring Cloud, running in port :2001 info.message is : i am config by jdbc`
+2. 我将 Git 上对应配置文件里的值改为`i am config by jdbc update `
+3. 发送 Post 请求到 `http://localhost:2001/actuator/refresh`
+4. 访问 <http://localhost:2001/hi> 返回`Hi Spring Cloud, running in port :2001 info.message is : i am config by jdbc update`
+
+不过，每次手动刷新客户端也很麻烦，有没有什么办法只要提交代码就自动调用客户端来更新呢，Github 的 Webhook 是一个办法。
+
+### Webhook
+
+Webhook 是当某个事件发生时，通过发送 HTTP POST 请求的方式来通知信息接收方。Webhook 来监测你在 Github.com 上的各种事件，最常见的莫过于 push 事件。如果你设置了一个监测 push 事件的 Webhook，那么每当你的这个项目有了任何提交，这个 Webhook 都会被触发，这时 Github 就会发送一个 HTTP POST 请求到你配置好的地址。
+
+如此一来，你就可以通过这种方式去自动完成一些重复性工作，比如，你可以用 Webhook 来自动触发一些持续集成（CI）工具的运作，比如 Travis CI；又或者是通过 Webhook 去部署你的线上服务器。下图就是 Github 上面的 Webhook 配置。
+
+![](./image/wehook.jpg)
+
+- `Payload URL` ：触发后回调的 URL
+- `Content type` ：数据格式，两种一般使用 json
+- `Secret` ：用作给 POST 的 body 加密的字符串。采用 HMAC 算法
+- `events` ：触发的事件列表。
+
+| events 事件类型 | 描述                         |
+| --------------- | ---------------------------- |
+| push            | 仓库有 push 时触发。默认事件 |
+| create          | 当有分支或标签被创建时触发   |
+| delete          | 当有分支或标签被删除时触发   |
+
+这样我们就可以利用 hook 的机制去触发客户端的更新，但是当客户端越来越多的时候，hook 机制也不够优雅了，另外每次增加客户端都需要改动 hook 也是不现实的。其实，Spring Cloud 给了我们更好解决方案——Spring Cloud Bus。后续我们将继续学习如何通过 Spring Cloud Bus 来实现以消息总线的方式进行通知配置信息的变化，完成集群上的自动化更新。

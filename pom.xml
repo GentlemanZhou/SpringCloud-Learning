@@ -13,6 +13,8 @@
         <module>mz-eureka-consumer-ribbon</module>
         <module>mz-config-server-git</module>
         <module>mz-config-server-mysql</module>
+        <module>mz-config-server-bus</module>
+        <module>mz-eureka-consumer-bus</module>
     </modules>
     <packaging>pom</packaging>
 
