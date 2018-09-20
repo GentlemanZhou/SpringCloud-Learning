@@ -1,17 +1,5 @@
 # Spring Cloud（八）熔断监控Hystrix Dashboard和Turbine
 
-
-
-
-
-
-
-
-
-
-
-
-
 前一节，我们已经成功的配置了熔断器，但是在实际应用中，单纯的熔断不能满足我们的需求，我们不止需要保证一个业务宕机不影响其他服务，同时也需要有监控能够知道服务情况，从而即时发现、解决问题，这一节我们就通过 Hystrix Dashboard和Turbine 完成这个功能。
 
 ## Hystrix Dashboard 和 Turbine
