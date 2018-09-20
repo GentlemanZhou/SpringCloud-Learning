@@ -7,3 +7,6 @@ server:
 spring:
     application:
         name: mz-eureka-consumer-ribon
+feign:
+  hystrix:
+    enabled: true

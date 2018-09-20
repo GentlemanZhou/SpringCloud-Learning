@@ -1,0 +1,21 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:1001/eureka/
+server:
+    port: 1005
+spring:
+    application:
+        name: mz-consumer-hystrix-dashboard
+feign:
+  hystrix:
+    enabled: true
+management:
+    endpoints:
+        web:
+            exposure:
+                include: hystrix.stream, info, health
+
+turbine:
+    appConfig: mz-consumer-hystrix-client-1,mz-consumer-hystrix-client-2
+    clusterNameExpression: new String("default")

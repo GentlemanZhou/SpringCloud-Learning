@@ -15,6 +15,9 @@
         <module>mz-config-server-mysql</module>
         <module>mz-config-server-bus</module>
         <module>mz-eureka-consumer-bus</module>
+        <module>mz-api-gateway-zuul</module>
+        <module>mz-consumer-hystrix-dashboard</module>
+        <module>mz-consumer-hystrix-client</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -136,3 +136,4 @@ management:
 3. 发送 Post 请求到 `http://localhost:2001/actuator/bus-refresh`
 4. 访问 <http://localhost:2001/hi> 返回`Hi Spring Cloud, running in port :2001 info.message is : i am config by jdbc update`
 
+测试完成！！

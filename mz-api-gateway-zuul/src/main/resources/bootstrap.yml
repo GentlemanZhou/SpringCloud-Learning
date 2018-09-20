@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: service-cart-zuul
+
+server:
+  port: 1004
+
+eureka:
+  client:   
+    registry-fetch-interval-seconds: 10
+    register-with-eureka: false
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:1001/eureka/
+      #defaultZone: http://EUREKA_SEVER_IP:EUREKA_SERVER_PORT/eureka/
+
+zuul:
+  routes:
+    route-1:
+      path: /client-one/**
+      service-id: mz-eureka-client-one
+    route-2:
+      path: /ribbon/**
+      service-id: mz-eureka-consumer-ribon
+  host:
+    socket-timeout-millis: 30000
+    connect-timeout-millis: 300000
+    
+    

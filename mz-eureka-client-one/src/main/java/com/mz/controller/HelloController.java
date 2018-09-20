@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @Value("${server.port}")
     private String serverPort;
-    @Value("${info.message}")
+    @Value("${info.message:error}")
     private String infoMessage;
     @RequestMapping("hi")
     public String sayHi() {
