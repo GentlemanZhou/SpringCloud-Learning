@@ -19,11 +19,11 @@
 
 [Spring Cloud（三）服务间调用Figen](./doc/Spring Cloud（三）服务间调用Figen.md)
 
-[Spring Cloud（四）配置中心Config](./doc/Spring Cloud（四）配置中心Config.md)
+[Spring Cloud（四）配置中心Config] (./doc/Spring Cloud（四）配置中心Config.md)
 
-[Spring Cloud（五）消息总线BUS](./doc/Spring Cloud（五）消息总线BUS.md)
+[Spring Cloud（五）消息总线BUS](/doc/Spring Cloud（五）消息总线BUS.md)
 
-[Spring Cloud（六）服务网关zuul](./doc/Spring Cloud（六）服务网关zuul.md)
+[Spring Cloud（六）服务网关zuul](https://gitee.com/mrzhouy/SpringCloud-Learning/blob/master/doc/Spring Cloud（六）服务网关zuul.md)
 
 [Spring Cloud（七）服务监控Hystrix](./doc/Spring Cloud（七）服务监控Hystrix.md)
 
