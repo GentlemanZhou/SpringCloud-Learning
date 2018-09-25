@@ -46,6 +46,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- 各个服务都需要暴露监控信息，因此在父项目中统一引用-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

@@ -211,9 +211,3 @@ public class EurekaRibbonApplication {
 
 5、输入 http://localhost:1005/turbine.stream 点击 Monitor Stream 查看结果。
 
-
-
-### 
-
-
-

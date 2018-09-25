@@ -18,6 +18,9 @@
         <module>mz-api-gateway-zuul</module>
         <module>mz-consumer-hystrix-dashboard</module>
         <module>mz-consumer-hystrix-client</module>
+        <module>mz-zipkin-server</module>
+        <module>mz-zipkin-client-one</module>
+        <module>mz-zipkin-client-two</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -50,6 +53,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- 各个服务都需要暴露监控信息，因此在父项目中统一引用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

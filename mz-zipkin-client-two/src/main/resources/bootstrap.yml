@@ -1,0 +1,17 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:1001/eureka/
+server:
+    port: 2002
+spring:
+    application:
+        name: mz-zipkin-client-two
+    sleuth:
+        sampler:
+            probability: 1.0
+        zipkin:
+            base-url: http://localhost:9411
+feign:
+  hystrix:
+    enabled: true

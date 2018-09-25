@@ -1,0 +1,28 @@
+server:
+    port: 9411
+spring:
+    application:
+        name: zipkin-server
+
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+
+#spring cloud (十) Sleuth+ZipKin 实现服务追踪（续）   改造
+zipkin:
+    collector:
+        kafka:
+            bootstrap-servers: 192.168.0.222:32772
+            groupId: zipkin
+            topic: zipkin
+    storage:
+        StorageComponent: elasticsearch
+        elasticsearch:
+            cluster: elasticsearch
+            hosts: 192.168.0.222:9200
+            index: zipkin
+            index-replicas: 1
+            index-shards: 5
+        type: elasticsearch
